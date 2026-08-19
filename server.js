@@ -533,7 +533,9 @@ app.post('/v1/chat/completions', async (req, res) => {
     } = req.body;
 
     const primaryModel = MODEL_MAPPING[model] || 'nvidia/llama-3.3-nemotron-super-49b-v1.5';
-    const modelChain = [primaryModel, ...FALLBACK_MODELS];
+    const modelChain = model === 'glm-5.2'
+      ? [primaryModel]
+      : [primaryModel, ...FALLBACK_MODELS];
 
     const baseRequest = {
       messages,
